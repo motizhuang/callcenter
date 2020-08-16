@@ -25,4 +25,4 @@ Validator.o: Validator.cpp Validator.h Objects.h
 
 
 clean:
-	rm -f genepool main.o MyCallCenter.o Validator.o
+	rm -f callcenter main.o MyCallCenter.o Validator.o
