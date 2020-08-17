@@ -20,7 +20,10 @@ MyCallCenter::MyCallCenter(std::vector<Employee> employees){
   /*for(const Employee& person : mEmployees){
     action[person.id]=0; 
   }*/
+  
   employeecount = mEmployees.size();
+  std::vector<int> starter(employeecount, 0);
+  action = starter; 
 }
 std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_ids){
   //thisminute = minute; 
@@ -101,8 +104,8 @@ bool MyCallCenter::can_pick_up(){
   for(int i = 0; i<26; i++)
     for(int j =0; j<employeecount; j++ ){
       Employee& employee = mEmployees[j]; 
-      if(action[employee.id]==0){
-        if(mPool[i].top()!=nullptr&&mPool[i].top()->difficulty<employee.skill){
+      if(action[employee.id]==0&&!mPool[i].empty()){
+        if(mPool[i].top()->difficulty<employee.skill){
           employee.call=mPool[i].top();
           haveImportant.push_back(mPool[i].top());
           mPool[i].pop();
