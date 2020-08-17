@@ -44,38 +44,54 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
       if(mEmployees[i].call!=nullptr)
       action[i]=mEmployees[i].call->id; 
     }
-  }
-  else if(have_important()){
+  }else{
+  if(have_important()){//important calls to take 
     for(int i = 0; i<employeecount;i++){
       action[i]=mEmployees[i].call->id; 
     }
   } //if(working())
-  else if(can_pick_up()){
+  if(can_pick_up()){
     for(int i = 0; i<employeecount;i++){
       action[i]=mEmployees[i].call->id; 
     }
-    /*if(can_hang()){
-
-    }*/
+  }
+  if(can_hang()){//should be after checks for -1
+    for(int i = 0; i<employeecount;i++){
+      action[i]=mEmployees[i].call->id; 
+    }
+  }
   }
   return action; 
 }
-/*bool MyCallCenter::can_hang(){
-  if(work_required==work_performed)
-}*/
+bool MyCallCenter::can_hang(){
+  int count=0; 
+  for(int i = 0; i< employeecount; i++){
+    Employee& employee = mEmployees[i]; 
+  if(employee.call->work_required==employee.call->work_performed){
+  action[i]=-1;
+  count++; 
+  }
+  }
+  if(count!=0)
+  return true; 
+  return false; 
+}
 bool MyCallCenter::have_null(){
+  int count = 0; 
   for(int j = 1; j<26; j++)
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
-    if(employee.call==nullptr&&!mPool[j].empty()){
-      if(mPool[j].top()->difficulty<=employee.skill){
+    if(employee.call==nullptr)
+    count++; 
+    if(!mPool[j].empty()){
+      if(j<=employee.skill){
         employee.call=mPool[j].top();
         haveImportant.push_back(mPool[j].top());
         mPool[j].pop();
       }
     }
   }
-  if(!haveImportant.empty())
+  if(count!=0)
   return true; 
   return false;
 }
@@ -84,7 +100,7 @@ bool MyCallCenter::have_important(){
   for(int i = 1; i<26; i++)//wait if want difficult calls done first, just invert 26 first...
       for(int j =0; j<employeecount; j++ ){
         Employee& employee = mEmployees[j]; 
-        if(!mPool[i].empty()&&mPool[i].top()->importance>employee.call->importance&&mPool[i].top()->difficulty<employee.skill){//problem is if there's an employee down the line 
+        if(!mPool[i].empty()&&mPool[i].top()->importance>employee.call->importance&&i<=employee.skill){//problem is if there's an employee down the line 
         //who is better can take that call instead
           //newcall = employee.call; 
           mPool[employee.call->difficulty].push(employee.call); //put on hold 
@@ -104,15 +120,14 @@ bool MyCallCenter::can_pick_up(){
   for(int i = 0; i<26; i++)
     for(int j =0; j<employeecount; j++ ){
       Employee& employee = mEmployees[j]; 
-      if(action[employee.id]==0&&!mPool[i].empty()){
-        if(mPool[i].top()->difficulty<employee.skill){
+      if((action[employee.id]==0||action[employee.id]==-1)&&!mPool[i].empty()){
+        if(i<=employee.skill){
           employee.call=mPool[i].top();
           haveImportant.push_back(mPool[i].top());
           mPool[i].pop();
         }
       }
-
-  }
+    }
   if(!haveImportant.empty())
   return true; 
   return false; 

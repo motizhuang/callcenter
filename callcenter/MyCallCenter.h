@@ -47,6 +47,7 @@ public:
   bool have_important();
   bool can_pick_up();
   bool have_null();
+  bool can_hang();
 };
 
 #endif
