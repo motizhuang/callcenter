@@ -14,7 +14,7 @@ class MyCallCenter: public CallCenter {
     if(a == nullptr || b == nullptr) {
       throw std::invalid_argument("Null pointer in result set.");
     }
-    return a->importance < b->importance;
+    return a->importance > b->importance;
   };
   struct CompareSmall{
     bool operator () (const Call* a, const Call* b) const{
@@ -46,6 +46,7 @@ public:
   // Other Member Functions
   bool have_important();
   bool can_pick_up();
+  bool have_null();
 };
 
 #endif
