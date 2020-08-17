@@ -134,14 +134,15 @@ bool MyCallCenter::can_pick_up(){
 }
 void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
   for(const auto& pool: calls){
-    Call* info = nullptr; 
-    info->id             =pool.id;                        
-    info->recieved       =pool.recieved;            
-    info->importance     =pool.importance;        
-    info->difficulty     =pool.difficulty;        
-    info->work_required  =pool.work_required;  
-    info->work_performed =pool.work_performed;
-    mPool[info->difficulty].push(info);  
+    for(int j =0; j<employeecount; j++ ){
+      Employee& employee = mEmployees[j];
+      if(employee.call->id==pool.id){
+        employee.call->recieved       =pool.recieved;            
+        employee.call->importance     =pool.importance;        
+        employee.call->difficulty     =pool.difficulty;        
+        employee.call->work_required  =pool.work_required;  
+        employee.call->work_performed =pool.work_performed;
+      }
   }
   /*START OF MINUTE
 1) Learn new call IDs
@@ -151,6 +152,7 @@ void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
 END OF MINUTE*/
 //*when a calls in vector change, no work can be done. if it was in the same place the last minute, this minute it does work. 
   (void) minute; 
+}
 }
 
 // MyCallCenter Member Functions
