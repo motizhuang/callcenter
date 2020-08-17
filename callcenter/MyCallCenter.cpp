@@ -17,9 +17,9 @@ MyCallCenter::MyCallCenter(std::vector<Employee> employees){
     mEmployees[employee.id]=info; 
   }*/
   mEmployees=employees; 
-  for(const auto& person : mEmployees){
+  /*for(const Employee& person : mEmployees){
     action[person.id]=0; 
-  }
+  }*/
   employeecount = mEmployees.size();
 }
 std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_ids){
