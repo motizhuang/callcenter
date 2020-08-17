@@ -134,7 +134,7 @@ bool MyCallCenter::can_pick_up(){
 }
 void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
   for(const auto& pool: calls){
-    Call* info; 
+    Call* info = nullptr; 
     info->id             =pool.id;                        
     info->recieved       =pool.recieved;            
     info->importance     =pool.importance;        
