@@ -48,6 +48,7 @@ public:
   bool can_pick_up();
   bool have_null();
   bool can_hang();
+  bool too_hard();
 };
 
 #endif
