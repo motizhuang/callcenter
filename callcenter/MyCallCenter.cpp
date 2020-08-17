@@ -64,8 +64,8 @@ bool MyCallCenter::have_null(){
   for(int j = 1; j<26; j++)
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
-    if(employee.call==nullptr){
-      if(mPool[j].top()!=nullptr&&mPool[j].top()->difficulty<=employee.skill){
+    if(employee.call==nullptr&&!mPool[j].empty()){
+      if(mPool[j].top()->difficulty<=employee.skill){
         employee.call=mPool[j].top();
         haveImportant.push_back(mPool[j].top());
         mPool[j].pop();
@@ -81,7 +81,7 @@ bool MyCallCenter::have_important(){
   for(int i = 1; i<26; i++)//wait if want difficult calls done first, just invert 26 first...
       for(int j =0; j<employeecount; j++ ){
         Employee& employee = mEmployees[j]; 
-        if(mPool[i].top()!=nullptr&&mPool[i].top()->importance>employee.call->importance&&mPool[i].top()->difficulty<employee.skill){//problem is if there's an employee down the line 
+        if(!mPool[i].empty()&&mPool[i].top()->importance>employee.call->importance&&mPool[i].top()->difficulty<employee.skill){//problem is if there's an employee down the line 
         //who is better can take that call instead
           //newcall = employee.call; 
           mPool[employee.call->difficulty].push(employee.call); //put on hold 
