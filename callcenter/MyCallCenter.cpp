@@ -61,7 +61,7 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
   if(work_required==work_performed)
 }*/
 bool MyCallCenter::have_null(){
-  for(int j = 0; j<26; j++)
+  for(int j = 1; j<26; j++)
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
     if(employee.call==nullptr){
@@ -78,7 +78,7 @@ bool MyCallCenter::have_null(){
 }
 bool MyCallCenter::have_important(){
   //Call newcall; 
-  for(int i = 0; i<26; i++)//wait if want difficult calls done first, just invert 26 first...
+  for(int i = 1; i<26; i++)//wait if want difficult calls done first, just invert 26 first...
       for(int j =0; j<employeecount; j++ ){
         Employee& employee = mEmployees[j]; 
         if(mPool[i].top()!=nullptr&&mPool[i].top()->importance>employee.call->importance&&mPool[i].top()->difficulty<employee.skill){//problem is if there's an employee down the line 
