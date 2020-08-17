@@ -41,7 +41,7 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
       if(mEmployees[i].call!=nullptr)
       action[i]=mEmployees[i].call->id; 
     }
-  }/*
+  }
   else if(have_important()){
     for(int i = 0; i<employeecount;i++){
       action[i]=mEmployees[i].call->id; 
@@ -51,10 +51,10 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
     for(int i = 0; i<employeecount;i++){
       action[i]=mEmployees[i].call->id; 
     }
-    if(can_hang()){
+    /*if(can_hang()){
 
-    }
-  }*/
+    }*/
+  }
   return action; 
 }
 /*bool MyCallCenter::can_hang(){
