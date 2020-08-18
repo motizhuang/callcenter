@@ -64,6 +64,10 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
     }
   }*/
   can_hang();
+  for(int i = 0; i<employeecount;i++){
+      if(mEmployees[i].call!=nullptr)
+      mEmployees[i].call->work_performed++; 
+    }
   return action; 
 }
 bool MyCallCenter::too_hard(){
@@ -93,9 +97,13 @@ void MyCallCenter::can_hang(){
   int count=0; 
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
+    //if(employee.name=="Lucius")
+    if(employee.call!=nullptr)
+    std::cout<<employee.name<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
     if(employee.call!=nullptr&&employee.call->work_required==employee.call->work_performed){
       action[i]=-1;
-      std::cout<<employee.name<<" finished call. "<<'\n';
+      employee.call=nullptr; 
+      std::cout<<employee.name<<" aaaaaaaaaaaaaaaaaaa finished call. "<<'\n';
       count++; 
     }
   }
