@@ -31,6 +31,7 @@ MyCallCenter::~MyCallCenter(){
   //while(const auto& pair: mPool[i]) {
     while(!mPool[i].empty()){
       delete mPool[i].top();
+      mPool[i].pop();
   }
 }
 std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_ids){
