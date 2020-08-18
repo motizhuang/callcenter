@@ -31,6 +31,7 @@ class MyCallCenter: public CallCenter {
   //std::map<int, Call>  mPool;
   int employeecount; 
   std::vector<int> action;
+  std::vector<int> prevaction;
   std::priority_queue<Call*,std::vector<Call*> ,Compare> mPool[26]; 
   int thisminute; 
   std::vector<Call*> haveImportant; 

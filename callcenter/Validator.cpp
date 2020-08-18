@@ -97,6 +97,7 @@ std::vector<Call> Validator::validate(int minute, const std::vector<int>& action
     if(action == -1) {
       // Complete the current call:
       if(call == nullptr) {
+        std::cout<<employee.id<<'\n';
         throw validation_error(employee.name + " doesn't have an active call to complete.");
       }
 

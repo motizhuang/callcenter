@@ -21,6 +21,7 @@ MyCallCenter::MyCallCenter(std::vector<Employee> employees){
   employeecount = mEmployees.size();
   std::vector<int> starter(employeecount, 0);
   action = starter; 
+  prevaction = starter; 
 }
 std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_ids){
   for(const int& id : call_ids){
@@ -57,17 +58,17 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
       action[i]=mEmployees[i].call->id; 
     }
   }
-  /*if(can_hang()){//should be after checks for -1
-    for(int i = 0; i<employeecount;i++){
-      if(mEmployees[i].call!=nullptr)
-      action[i]=mEmployees[i].call->id; 
-    }
-  }*/
   can_hang();
-  for(int i = 0; i<employeecount;i++){
-      if(mEmployees[i].call!=nullptr)
-      mEmployees[i].call->work_performed++; 
+  for(int i = 0; i<employeecount;i++){//keep track of work_performed
+  if(prevaction[i]==-1&&action[i]==-1){
+        mEmployees[i].call=nullptr; 
+      action[i]=0;  
+      }
+      if(mEmployees[i].call!=nullptr&&prevaction[i]==action[i])
+      mEmployees[i].call->work_performed++;
+      
     }
+  prevaction = action; 
   return action; 
 }
 bool MyCallCenter::too_hard(){
@@ -75,15 +76,15 @@ bool MyCallCenter::too_hard(){
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
     if(employee.call!=nullptr&&employee.call->difficulty>employee.skill){
-      mPool[employee.call->difficulty].push(employee.call); 
+      mPool[employee.call->difficulty].push(employee.call);
+      employee.call=nullptr;  
       for(int j = 25; j>0; j--){
         if(!mPool[j].empty()&&j<=employee.skill){
           employee.call=mPool[j].top(); 
           mPool[j].pop();
         }
       }
-      if(employee.call->difficulty>employee.skill){//so if there's none that person can take, need to evacuate that spot
-        employee.call=nullptr;
+      if(employee.call==nullptr){//so if there's none that person can take, need to evacuate that spot
         action[i]=0;
       }
       count++; 
@@ -101,9 +102,10 @@ void MyCallCenter::can_hang(){
     if(employee.call!=nullptr)
     std::cout<<employee.name<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
     if(employee.call!=nullptr&&employee.call->work_required==employee.call->work_performed){
+      //if(action[i]==prevaction[i]&&action[i]!=-1)
       action[i]=-1;
-      employee.call=nullptr; 
-      std::cout<<employee.name<<" aaaaaaaaaaaaaaaaaaa finished call. "<<'\n';
+      //employee.call=nullptr; //screws stuff up. allows more work to be done when it shouldn't be. perhaps because some skill too low 
+      std::cout<<employee.id<<" aaaaaaaaaaaaaaaaaaa finished call. "<<employee.call->id<<'\n';
       count++; 
     }
   }
@@ -132,7 +134,7 @@ bool MyCallCenter::have_null(){
 }
 bool MyCallCenter::have_important(){
   //Call newcall; 
-  for(int i = 1; i<26; i++)//wait if want difficult calls done first, just invert 26 first...
+  for(int i = 25; i>0; i--)//wait if want difficult calls done first, just invert 26 first...
       for(int j =0; j<employeecount; j++ ){
         Employee& employee = mEmployees[j]; 
         if(employee.call!=nullptr&&!mPool[i].empty()&&mPool[i].top()->importance>employee.call->importance&&i<=employee.skill){//problem is if there's an employee down the line 
