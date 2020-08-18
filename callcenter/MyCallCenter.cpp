@@ -110,8 +110,10 @@ void MyCallCenter::can_pick_up(){
   for(int j =0; j<employeecount; j++ ){
      Employee& employee = mEmployees[j];
     for(int i = 25; i>0; i--){
-      if(prevaction[j]==-1)
-      employee.call=nullptr; 
+      if(prevaction[j]==-1){
+        delete employee.call; 
+        employee.call=nullptr; 
+      }
       if(employee.call==nullptr&&i<=employee.skill&&!mPool[i].empty()){
         employee.call=mPool[i].top();
         mPool[i].pop();
