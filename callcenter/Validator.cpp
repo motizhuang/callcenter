@@ -154,7 +154,7 @@ std::vector<Call> Validator::validate(int minute, const std::vector<int>& action
       }
 
       Call* call = itr->second;
-      log(" - " + employee.name + " takes Call " + s(call->id) + " out of hold.", 3);
+      log(" - " + employee.name + s(employee.id) + " takes Call " + s(call->id) + " out of hold.", 3);
       employee.call = call;
       mPool.erase(itr);
     }

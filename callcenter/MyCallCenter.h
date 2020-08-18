@@ -46,10 +46,10 @@ public:
 
   // Other Member Functions
   bool have_important();
-  bool can_pick_up();
-  bool have_null();
+  void can_pick_up();
+  void have_null();
   void can_hang();
-  bool too_hard();
+  void too_hard();
 };
 
 #endif
