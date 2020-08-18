@@ -3,6 +3,7 @@
 #include "Objects.h"
 #include <string> 
 #include <queue> 
+#include <iostream>
 
 CallCenter* CallCenter::create(std::vector<Employee> employees) {
   return new MyCallCenter(employees);
@@ -56,12 +57,13 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
       action[i]=mEmployees[i].call->id; 
     }
   }
-  if(can_hang()){//should be after checks for -1
+  /*if(can_hang()){//should be after checks for -1
     for(int i = 0; i<employeecount;i++){
       if(mEmployees[i].call!=nullptr)
       action[i]=mEmployees[i].call->id; 
     }
-  }
+  }*/
+  can_hang();
   return action; 
 }
 bool MyCallCenter::too_hard(){
@@ -87,22 +89,23 @@ bool MyCallCenter::too_hard(){
   return true; 
   return false; 
 }
-bool MyCallCenter::can_hang(){
+void MyCallCenter::can_hang(){
   int count=0; 
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
     if(employee.call!=nullptr&&employee.call->work_required==employee.call->work_performed){
       action[i]=-1;
+      std::cout<<employee.name<<" finished call. "<<'\n';
       count++; 
     }
   }
-  if(count!=0)
+  /*if(count!=0)
   return true; 
-  return false; 
+  return false; */
 }
 bool MyCallCenter::have_null(){
   int count = 0; 
-  for(int j = 1; j<26; j++)
+  for(int j = 25; j>=0; j--)
     for(int i = 0; i< employeecount; i++){
       Employee& employee = mEmployees[i]; 
       if(employee.call==nullptr){
@@ -141,11 +144,11 @@ bool MyCallCenter::have_important(){
   //there's a call more important on hold 
 }
 bool MyCallCenter::can_pick_up(){
-  for(int i = 0; i<26; i++)
+  for(int i = 25; i>0; i--)
     for(int j =0; j<employeecount; j++ ){
       Employee& employee = mEmployees[j];
        
-      if(employee.call!=nullptr&&(action[employee.id]==0||action[employee.id]==-1)&&!mPool[i].empty()){
+      if(employee.call!=nullptr&&(action[j]==0||action[j]==-1)&&!mPool[i].empty()){
         if(i<=employee.skill){
           employee.call=mPool[i].top();
           haveImportant.push_back(mPool[i].top());
@@ -168,7 +171,7 @@ void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
         employee.call->work_required  =pool.work_required;  
         employee.call->work_performed =pool.work_performed;
       }
-  }
+    }
     (void) minute; 
   } 
 }
