@@ -39,6 +39,7 @@ public:
   // Constructor
   MyCallCenter(std::vector<Employee> employees);
   // Destructor?
+  ~MyCallCenter();
 
   // Required Member Functions
   std::vector<int> calls(int minute, const std::vector<int>& call_ids);

@@ -23,6 +23,16 @@ MyCallCenter::MyCallCenter(std::vector<Employee> employees){
   action = starter; 
   prevaction = starter; 
 }
+MyCallCenter::~MyCallCenter(){
+  for(const Employee& employee: mEmployees) {
+    delete employee.call;
+  }
+  for(int i = 1; i<26; i++)
+  //while(const auto& pair: mPool[i]) {
+    while(!mPool[i].empty()){
+      delete mPool[i].top();
+  }
+}
 std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_ids){
   for(const int& id : call_ids){
     Call info; 
