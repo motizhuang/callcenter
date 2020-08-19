@@ -56,6 +56,10 @@ void Validator::summarize() const {
   }
 
   if(!mPool.empty()) {
+    for(auto elem : mPool)
+{
+   std::cout << elem.second->id <<"difficulty: "<<elem.second->difficulty<<" work performed: "<<elem.second->work_performed<<"\n";
+}
     throw validation_error("Some calls were still on hold.");
   }
 
@@ -116,7 +120,7 @@ std::vector<Call> Validator::validate(int minute, const std::vector<int>& action
     }
     else if(call && action != call->id) {
       // Put the current call back into the hold pool:
-      log(" - " + employee.name + " puts Call " + s(call->id) + " on hold.", 3);
+      log(" - " + employee.name + s(employee.id) + " puts Call " + s(call->id) + " on hold.", 3);
       employee.call   = nullptr;
       mPool[call->id] = call;
     }
@@ -154,7 +158,7 @@ std::vector<Call> Validator::validate(int minute, const std::vector<int>& action
       }
 
       Call* call = itr->second;
-      log(" - " + employee.name + s(employee.id) + " takes Call " + s(call->id) + " out of hold.", 3);
+      log(" - " + employee.name + " takes Call " + s(call->id) + " out of hold." +s(employee.id), 3);
       employee.call = call;
       mPool.erase(itr);
     }

@@ -64,6 +64,14 @@ void MyCallCenter::too_hard(){
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
     if(employee.call!=nullptr&&employee.call->difficulty>employee.skill){
+      for(int j = 0; j<employeecount;j++){
+        Employee& another = mEmployees[j]; 
+        if(another.skill>=employee.call->difficulty&&action[another.id]==0){
+          another.call=employee.call; 
+          action[i]=0; 
+        }
+      }
+      if(action[i]!=0)
       mPool[employee.call->difficulty].push(employee.call);
       employee.call=nullptr;  
       action[i]=0; 
@@ -80,7 +88,7 @@ void MyCallCenter::can_hang(){
     Employee& employee = mEmployees[i]; 
     //if(employee.name=="Lucius")
     if(employee.call!=nullptr)
-    std::cout<<employee.name<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
+    std::cout<<employee.id<<"is working"<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
     if(employee.call!=nullptr&&employee.call->work_required==employee.call->work_performed){
       action[i]=-1;
       //employee.call=nullptr; //screws stuff up. allows more work to be done when it shouldn't be. perhaps because some skill too low 
@@ -108,9 +116,10 @@ bool MyCallCenter::have_important(){
 void MyCallCenter::can_pick_up(){
   int count = 0; 
   for(int j =0; j<employeecount; j++ ){
-     Employee& employee = mEmployees[j];
+    Employee& employee = mEmployees[j];
     for(int i = 25; i>0; i--){
       if(prevaction[j]==-1){
+        action[j]=0;
         delete employee.call; 
         employee.call=nullptr; 
       }
@@ -120,7 +129,7 @@ void MyCallCenter::can_pick_up(){
         count++;
         action[j]=employee.call->id;   
       } 
-      if(employee.call!=nullptr&&action[j]==0&&!mPool[i].empty()){
+      if(/*employee.call!=nullptr&&*/action[j]==0&&!mPool[i].empty()){
         if(i<=employee.skill){
           employee.call=mPool[i].top();
           mPool[i].pop();
@@ -129,12 +138,7 @@ void MyCallCenter::can_pick_up(){
         }
       }
     }
-    if(employee.call==nullptr)
-      action[j]=0;
   }
-  /*if(count!=0)
-  return true; 
-  return false; */
 }
 void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
   for(const auto& pool: calls){
