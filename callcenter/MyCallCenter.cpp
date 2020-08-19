@@ -51,9 +51,6 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
   for(int i = 0; i<employeecount;i++){//keep track of work_performed
     if(mEmployees[i].call!=nullptr&&prevaction[i]==action[i]&&action[i]!=-1)
       mEmployees[i].call->work_performed++;
-    /*if(mEmployees[i].call!=nullptr)
-    action[i]=mEmployees[i].call->id; //if too hard or can pick up doesn't enter, then this is needed
-    //but can't have it equal to id because -1 isn't an id. */
   }
   
   prevaction = action; 
@@ -63,24 +60,20 @@ void MyCallCenter::too_hard(){
   int count=0; 
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
+    Call* call = employee.call; 
     if(employee.call!=nullptr&&employee.call->difficulty>employee.skill){
-      for(int j = 0; j<employeecount;j++){
-        Employee& another = mEmployees[j]; 
-        if(another.skill>=employee.call->difficulty&&action[another.id]==0){
-          another.call=employee.call; 
-          action[i]=0; 
-        }
+      mPool[employee.call->difficulty].push(call);
+      std::priority_queue<Call*,std::vector<Call*> ,Compare> mpool; 
+      mpool = mPool[employee.call->difficulty]; 
+      while(!mpool.empty()){
+        std::cout<<"ids: "<<mpool.top()->id<<'\n';
+        mpool.pop(); 
       }
-      if(action[i]!=0)
-      mPool[employee.call->difficulty].push(employee.call);
       employee.call=nullptr;  
       action[i]=0; 
       count++;
     }
   }
-  /*if(count!=0)
-  return true; 
-  return false; */
 }
 void MyCallCenter::can_hang(){
   int count=0; 
