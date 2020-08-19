@@ -69,6 +69,7 @@ void MyCallCenter::too_hard(){
         mpool.pop();
       }*/
       mPool[employee.call->difficulty].push(employee.call);
+      std::cout<<"aaaaaaaaaaaaaaaaaa"<<mPool[employee.call->difficulty].size()<<'\n';
       employee.call=nullptr;  
       action[i]=0; 
     }
@@ -88,17 +89,19 @@ void MyCallCenter::can_hang(){
 void MyCallCenter::can_pick_up(){
   for(int j =0; j<employeecount; j++ ){
     Employee& employee = mEmployees[j];
-    for(int i = 25; i>0; i--){
-      if(prevaction[j]==-1){
+    if(prevaction[j]==-1){
         action[j]=0;
         delete employee.call; 
         employee.call=nullptr; 
       }
+    for(int i = 25; i>0; i--){
+      
       if((employee.call==nullptr||action[j]==0)&&!mPool[i].empty()){
         if(i<=employee.skill){
           employee.call=mPool[i].top();
           mPool[i].pop();
           action[j]=employee.call->id; 
+          break; 
         }
       }
     }
