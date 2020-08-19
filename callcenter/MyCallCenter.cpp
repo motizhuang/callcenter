@@ -49,33 +49,43 @@ std::vector<int> MyCallCenter::calls(int minute, const std::vector<int>& call_id
   return action; 
 }
 void MyCallCenter::too_hard(){
-  int count=0; 
   for(int i = 0; i< employeecount; i++){
-    Employee& employee = mEmployees[i]; 
-    Call* call = employee.call; 
+    Employee& employee = mEmployees[i];  
     if(employee.call!=nullptr&&employee.call->difficulty>employee.skill){
-      mPool[employee.call->difficulty].push(call);//this works 
+      /*Call call;
+      call.id             =employee.call->id;                        
+      call.recieved       =employee.call->recieved;            
+      call.importance     =employee.call->importance;        
+      call.difficulty     =employee.call->difficulty;        
+      call.work_required  =employee.call->work_required;  
+      call.work_performed =employee.call->work_performed;
+      //mPool[info.difficulty].push(new Call(info));
+      mPool[employee.call->difficulty].push(new Call(call));//this works 
+      std::priority_queue<Call*,std::vector<Call*> ,Compare> mpool; 
+      mpool = mPool[employee.call->difficulty];
+      int size= mpool.size();  
+      for(int j =0; j<size;j++){
+        std::cout<<"aaaaaaaaaaaaaaa"<<mpool.top()->id<<"difficulty!!!!!!"<<mpool.top()->difficulty<<'\n';
+        mpool.pop();
+      }*/
+      mPool[employee.call->difficulty].push(employee.call);
       employee.call=nullptr;  
       action[i]=0; 
-      count++;
     }
   }
 }
 void MyCallCenter::can_hang(){
-  int count=0; 
   for(int i = 0; i< employeecount; i++){
     Employee& employee = mEmployees[i]; 
-    if(employee.call!=nullptr)
-    std::cout<<employee.id<<"is working"<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
+    //if(employee.call!=nullptr)
+    //std::cout<<employee.id<<"is working"<<employee.call->work_performed<<" on "<<employee.call->id<<" with "<<employee.call->work_required<<'\n';
     if(employee.call!=nullptr&&employee.call->work_required==employee.call->work_performed){
       action[i]=-1; 
-      std::cout<<employee.id<<" aaaaaaaaaaaaaaaaaaa finished call. "<<employee.call->id<<'\n';
-      count++; 
+      //std::cout<<employee.id<<" aaaaaaaaaaaaaaaaaaa finished call. "<<employee.call->id<<'\n';
     }
   }
 }
 void MyCallCenter::can_pick_up(){
-  int count = 0; 
   for(int j =0; j<employeecount; j++ ){
     Employee& employee = mEmployees[j];
     for(int i = 25; i>0; i--){
@@ -88,7 +98,6 @@ void MyCallCenter::can_pick_up(){
         if(i<=employee.skill){
           employee.call=mPool[i].top();
           mPool[i].pop();
-          count++; 
           action[j]=employee.call->id; 
         }
       }
@@ -105,7 +114,6 @@ void MyCallCenter::learn(int minute, const std::vector<Call>& calls){
         employee.call->difficulty     =pool.difficulty;
         if(employee.call->work_required!=pool.work_required){
           employee.call->work_performed=0; 
-          //std::cout<<"does this work"<<'\n';
         }        
         employee.call->work_required  =pool.work_required;  
       }
